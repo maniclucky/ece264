@@ -190,7 +190,30 @@ void my_strcat(char * s1, const char * s2)
  */
 void my_strncat(char * s1, const char * s2, int num)
 {
-   
+  int i=0;
+  int n=0;
+  while(s1[i]!='\0')
+    {
+      i++;
+    }
+  while(1)
+    {
+      if(s2[n]!='\0')
+	{
+	  s1[i]=s2[n];
+	}
+      else
+      {
+	return;
+      }
+      if(n==num)
+	{
+	  s1[i]='\0';
+	  return;
+	}
+      i++;
+      n++;
+    }
 }
 
 /**
@@ -205,7 +228,40 @@ void my_strncat(char * s1, const char * s2, int num)
 
 const char *my_strstr(const char * s1, const char * s2)
 {
-    return NULL;
+  int i=0;
+  int n;
+  int r;
+  const char* tgt;
+  int pft=0;
+  while(s1[i]!='\0' && pft==0)
+    {
+      n=0;
+      r=i;
+      if(s1[i]==s2[n])
+	{
+	  pft=1;
+	  tgt=&s1[i];
+	  while(s2[n]!='\0')
+	    {
+	      if(s2[n]!=s1[r])
+		{
+		  pft=0;
+		  break;
+		}
+	      n++;
+	      r++;
+	    }
+	}
+      i++;
+    }
+  if(pft!=0)
+    {
+      return(tgt);
+    }
+  else
+    {
+      return NULL;
+    }
 }
 
 
