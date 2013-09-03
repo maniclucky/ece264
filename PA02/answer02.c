@@ -11,8 +11,7 @@ int my_strlen(const char * s)
 {
   int i=0;
   int ct=0;
-  int tru=0;
-  while(tru==0)
+  while(1)
     {
       if(s[i]=='\0')
 	{
@@ -32,7 +31,20 @@ int my_strlen(const char * s)
  */
 int my_countchar(const char * s, char c)
 {
-    return 0;
+  int ct=0;
+  int i=0;
+  while(1)
+    {
+      if(s[i]=='\0')
+	{
+	  return(ct);
+	}
+      if(s[i]==c)
+	{
+	  ct++;
+	}
+      i++;
+    }
 }
 
 /**
