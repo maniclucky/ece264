@@ -70,17 +70,15 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
   int * array;
   while(fscanf(pfile,"%d",&n)==1)
     {
-      n++;
+      c++;
     }
-  n--;
-  * numberOfIntegers=n;
-  printf("%d\n", n);
-  array=malloc(n);
+  * numberOfIntegers=c;
+  array=malloc(c);
   fseek(pfile,0,SEEK_SET);
-  for(i=0;i<n;i++)
+  for(i=0;i<c;i++)
     {
-      fscanf(pfile,"%d",&c);
-      array[i]=c;
+      fscanf(pfile,"%d",&n);
+      array[i]=n;
     }
   return(array);
 }
