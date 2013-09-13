@@ -227,9 +227,63 @@ void sort(int * arr, int length)
  * }
  * return -1;
  */
+
 int search(int * arr, int length, int key)
 {
-  return(-1);
+  int ctrpt=length/2;
+  int * pass;
+  int i;
+  int n=0;
+  int retval=0;
+  if(arr[0]==key)
+    {
+      return(0);
+    }
+  if(length==1 && arr[0]!=key)
+    {
+      return(-1);
+    }
+  if(arr[ctrpt]<key)
+    {
+      if(length%2==0)
+	{
+	  pass=malloc((ctrpt-1)*sizeof(int));
+	}
+      else
+	{
+	  pass=malloc(ctrpt*sizeof(int));
+	}
+      for(i=ctrpt+1;i<length;i++)
+	{
+	  pass[n]=arr[i];
+	  n++;
+	}
+      retval=search(pass,n+1,key);
+      if(retval==-1)
+	{
+	  return(-1);
+	}
+      retval=retval+ctrpt+1;
+    }
+  if(arr[ctrpt]>key)
+    {
+      pass=malloc((ctrpt-1)*sizeof(int));
+      for(i=0;i<ctrpt;i++)
+	{
+	  pass[i]=arr[i];
+	  n++;
+	}
+      retval=search(pass,n,key);
+      if(retval==-1)
+	{
+	  return(-1);
+	}
+    }
+  if(arr[ctrpt]==key)
+    {
+      retval=ctrpt;
+    }
+  return(retval);
 }
 
 
