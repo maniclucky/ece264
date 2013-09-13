@@ -234,13 +234,13 @@ int search(int * arr, int length, int key)
     {
       return(0);
     }
-  else if(length==1 && arr[0]!=key)
+  if(length==1 && arr[0]!=key)
     {
       return(-1);
     }
   int ctrpt=length/2;
   int * passar;
-  int i;
+  int i=1;
   int n=0;
   int retval=0;
   if(arr[ctrpt]==key)
@@ -249,13 +249,17 @@ int search(int * arr, int length, int key)
     }
   else if(arr[ctrpt]<key)
     {
-      passar=malloc(ctrpt*sizeof(int));
+      passar=malloc((ctrpt+1)*sizeof(int));
       for(i=ctrpt+1;i<length;i++)
 	{
 	  passar[n]=arr[i];
 	  n++;
 	}
       n++;
+      if(length%2==0)
+	{
+	  n++;
+	}
     }
   else if(arr[ctrpt]>key)
     {
@@ -266,11 +270,11 @@ int search(int * arr, int length, int key)
 	}
     }
   retval=search(passar,ctrpt,key);
+  free(passar);
   if(retval==-1)
     {
       return(retval);
     }
-  free(passar);
   return(retval+n);
 }
 
