@@ -73,13 +73,14 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
       c++;
     }
   * numberOfIntegers=c;
-  array=malloc(c);
+  array=malloc(c*sizeof(int));
   fseek(pfile,0,SEEK_SET);
   for(i=0;i<c;i++)
     {
       fscanf(pfile,"%d",&n);
       array[i]=n;
     }
+  fclose(pfile);
   return(array);
 }
 
@@ -122,53 +123,63 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
  */
 void sort(int * arr, int length)
 {
+  int pivot=arr[0];
+  int i;
+  int r=0;
+  int l=0;
+  int ri=0;
+  int li=0;
+  int * left;
+  int * right;
   if(length==1)
     {
       return;
     }
-  int h=0;
-  int l=0;
-  int hi=0;
-  int li=0;
-  int i;
-  int pivot=arr[0];
   for(i=1;i<length;i++)
     {
-      if(arr[i]>pivot)
-	{
-	  h++;
-	}
-      else if(arr[i]<pivot)
+      if(arr[i]<pivot)
 	{
 	  l++;
 	}
+      if(arr[i]>pivot)
+	{
+	  r++;
+	}
     }
-  int * left=malloc(l);
-  int * right=malloc(h);
+  left=malloc(l*sizeof(int));
+  right=malloc(r*sizeof(int));
   for(i=1;i<length;i++)
     {
-      if(arr[i]>pivot)
+      if(arr[i]<pivot)
 	{
 	  left[li]=arr[i];
 	  li++;
 	}
-      else if(arr[i]<pivot)
+      if(arr[i]>pivot)
 	{
-	  right[hi]=arr[i];
-	  hi++;
+	  right[ri]=arr[i];
+	  ri++;
 	}
     }
-  sort(left,l);
-  sort(right,h);
-  for(i=0;i<l;i++)
+  if(l>0)
     {
-      arr[i]=left[i];
+      sort(left,l);
+      for(i=0;i<l;i++)
+	{
+	  arr[i]=left[i];
+	}
     }
+  free(left);
   arr[l]=pivot;
-  for(i=0;i<h;i++)
+  if(r>0)
     {
-      arr[l+1+i]=right[i];
+      sort(right,r);
+      for(i=0;i<r;i++)
+	{
+	  arr[i+l+1]=right[i];
+	}
     }
+  free(right);
   return;
 }
 
@@ -218,39 +229,7 @@ void sort(int * arr, int length)
  */
 int search(int * arr, int length, int key)
 {
-  if(length==1 && arr[0]==key)
-    {
-      return(arr[0]);
-    }
-  else if(length==1 && arr[0]!=key)
-    {
-      return(-1);
-    }
-  int * pass;
-  int retval;
-  int i;
-  int n=0;
-  if(arr[length/2]<key)
-    {
-      pass=malloc(length-(length/2));
-      for(i=(length/2)+1;i<length;i++)
-	{
-	  pass[n]=arr[i];
-	  n++;
-	}
-    }
-  else if(arr[length/2]>key)
-    {
-      pass=malloc(length/2);
-      for(i=0;i<(length/2);i++)
-	{
-	  pass[i]=arr[i];
-	  n++;
-	}
-    }
-  retval=search(pass,n,key);
-  free(pass);
-  return(retval);
+  return(-1);
 }
 
 
