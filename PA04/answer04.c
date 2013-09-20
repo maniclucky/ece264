@@ -1,4 +1,4 @@
-/*
+/*asdf
  * Please fill the functions in this file.
  * You can add additional functions. 
  *
@@ -30,11 +30,41 @@
  * = 3
  */
 
+void printPartition(int * part, int ind)
+{
+  int i;
+  printf("= %d",part[0]);
+  for(i=1;i<ind;i++)
+    {
+      printf(" + %d",part[i]);
+    }
+  printf("\n");
+  return;
+}
+
+void partition(int * part,int ind, int left)
+{
+  int val;
+  if(left==0)
+    {
+      printPartition(part,ind);
+      return;
+    }
+  for(val=1;val<=left;val++)
+    {
+      part[ind]=val;
+      partition(part,ind+1,left-val);
+    }
+}
 
 void partitionAll(int value)
 {
   printf("partitionAll %d\n", value);
-  
+  int * arr;
+  arr=malloc(sizeof(int)*value);
+  partition(arr,0,value);
+  free(arr);
+  return;
 }
 /*
  * =================================================================
@@ -55,11 +85,34 @@ void partitionAll(int value)
  *
  */
 
+void partinc(int * part, int ind, int left, int nxt)
+{
+  int val;
+  if(left==0)
+    {
+      printPartition(part, ind);
+      return;
+    }
+  else if(left<0)
+    {
+      return;
+    }
+  for(val=nxt;val<=left;val++)
+    {
+      part[ind]=val;
+      partinc(part,ind+1,left-val,val+1);
+    }
+  return;
+}
 
 void partitionIncreasing(int value)
 {
   printf("partitionIncreasing %d\n", value);
-
+  int * arr;
+  arr=malloc(sizeof(int)*value);
+  partinc(arr,0,value,1);
+  free(arr);
+  return;
 }
 
 /*
@@ -81,12 +134,32 @@ void partitionIncreasing(int value)
  *
  */
 
-
+void partdec(int * part, int ind, int left, int nxt)
+{
+  if(left==0)
+    {
+      printPartition(part,ind);
+      return;
+    }
+  else if(left<0)
+    {
+      return;
+    }
+  int val;
+  for(val=nxt;val>0;val--)
+    {
+      part[ind]=val;
+      partdec(part,ind+1,left-val,val-1);
+    }
+  return;
+}
 void partitionDecreasing(int value)
 {
   printf("partitionDecreasing %d\n", value);
-  
-
+  int * arr;
+  arr=malloc(value*sizeof(int));
+  partdec(arr,0,value,value);
+  free(arr);
 }
 
 /*
@@ -106,11 +179,35 @@ void partitionDecreasing(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
-
+void partodd(int * part, int ind, int left)
+{
+  if(left==0)
+    {
+      printPartition(part,ind);
+      return;
+    }
+  else if(left<0)
+    {
+      return;
+    }
+  int val;
+  for(val=1;val<=left;val++)
+    {
+      if(val%2==1)
+	{
+	  part[ind]=val;
+	  partodd(part,ind+1,left-val);
+	}
+    }
+  return;
+}
 void partitionOdd(int value)
 {
   printf("partitionOdd %d\n", value);
-  
+  int * arr;
+  arr=malloc(sizeof(int)*value);
+  partodd(arr,0,value);
+  free(arr);
 }
 
 /*
@@ -132,10 +229,36 @@ void partitionOdd(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
+void parteven(int * part, int ind, int left)
+{
+  if(left==0)
+    {
+      printPartition(part,ind);
+      return;
+    }
+  else if(left<0)
+    {
+      return;
+    }
+  int val;
+  for(val=2;val<=left;val++)
+    {
+      if(val%2==0)
+	{
+	  part[ind]=val;
+	  parteven(part,ind+1,left-val);
+	}
+    }
+  return;
+}
+
 void partitionEven(int value)
 {
   printf("partitionEven %d\n", value);
-
+  int * arr;
+  arr=malloc(sizeof(int)*value);
+  parteven(arr,0,value);
+  free(arr);
 }
 
 /*
