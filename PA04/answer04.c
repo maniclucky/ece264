@@ -1,4 +1,4 @@
-/*asdf
+/*
  * Please fill the functions in this file.
  * You can add additional functions. 
  *
@@ -15,7 +15,7 @@
 #include "pa04.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
 
 
 /*
@@ -279,11 +279,41 @@ void partitionEven(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
+void partoe(int * part, int ind, int left, int oe)
+{
+  if(left==0)
+    {
+      printPartition(part,ind);
+      return;
+    }
+  else if(left<0)
+    {
+      return;
+    }
+  int val;
+  for(val=1;val<=left;val++)
+    {
+      if(oe==0 && val%2==0)
+	{
+	  part[ind]=val;
+	  partoe(part,ind+1,left-val,1);
+	}
+      else if(oe==1 && val%2==1)
+	{
+	  part[ind]=val;
+	  partoe(part,ind+1,left-val,0);
+	}
+    }
+  return;
+}
 
 void partitionOddAndEven(int value)
 {
   printf("partitionOddAndEven %d\n", value);
-  
+  int * arr;
+  arr=malloc(sizeof(int)*value);
+  partoe(arr,0,value,1);
+  free(arr);
 }
 
 /*
@@ -302,10 +332,48 @@ void partitionOddAndEven(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
+int isprime(int val)
+{
+  int i;
+  int limit=(int)(sqrt(val))+1;
+  for(i=2;i<limit;i++)
+    {
+      if(val%i==0)
+	{
+	  return(0);
+	}
+    }
+  return(1);
+}
 
+void partprime(int * part, int ind, int left)
+{
+  if(left==0)
+    {
+      printPartition(part,ind);
+      return;
+    }
+  else if(left<0)
+    {
+      return;
+    }
+  int val;
+  for(val=2;val<=left;val++)
+    {
+      if(isprime(val)==1)
+	{
+	  part[ind]=val;
+	  partprime(part,ind+1,left-val);
+	}
+    }
+  return;
+}
 
 void partitionPrime(int value)
 {
   printf("partitionPrime %d\n", value);
-
+  int * arr;
+  arr=malloc(sizeof(int)*value);
+  partprime(arr,0,value);
+  free(arr);
 }
