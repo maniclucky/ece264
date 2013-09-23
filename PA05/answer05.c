@@ -63,6 +63,25 @@
 
 int * readInteger(char * filename, int * numInteger)
 {
+  FILE * ptr;
+  ptr = fopen(filename, "r");
+  int ct=0;
+  int num=0;
+  int i;
+  int * arr;
+  while(fscanf(ptr,"%d",&num)==1)
+    {
+      ct++;
+    }
+  * numInteger=ct;
+  arr = malloc(sizeof(int)*ct);
+  fseek(ptr,0,SEEK_SET);
+  for(i=0;i<ct;i++)
+    {
+      fscanf(ptr,"%d",&arr[i]);
+    }
+  fclose(ptr);
+  return(arr);
 }
 
 /* ----------------------------------------------- */
@@ -133,6 +152,7 @@ int * readInteger(char * filename, int * numInteger)
 
 char * * readString(char * filename, int * numString)
 {
+  return(0);
 }
 
 /* ----------------------------------------------- */
@@ -191,7 +211,9 @@ void freeString(char * * arrString, int numString)
 
 int saveInteger(char * filename, int * arrInteger, int numInteger)
 {
+  return(0);
 }
+
 
 /* ----------------------------------------------- */
 /*
@@ -213,6 +235,7 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 
 int saveString(char * filename, char * * arrString, int numString)
 {
+  return(0);
 }
 
 /* ----------------------------------------------- */
