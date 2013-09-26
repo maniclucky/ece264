@@ -73,8 +73,7 @@ int * readInteger(char * filename, int * numInteger)
     {
       ct++;
     }
-  * numInteger=ct;
-  arr = malloc(sizeof(int)*ct);
+  arr=malloc(sizeof(int)*ct);
   fseek(ptr,0,SEEK_SET);
   for(i=0;i<ct;i++)
     {
@@ -152,6 +151,23 @@ int * readInteger(char * filename, int * numInteger)
 
 char * * readString(char * filename, int * numString)
 {
+  char * * arr;
+  char * hold = malloc(sizeof(char)*MAXIMUM_LENGTH);;
+  int i;
+  FILE * ptr;
+  ptr=fopen(filename,"r");
+  while(fgets(hold,MAXIMUM_LENGTH,ptr)!=NULL)
+    {
+      numString++;
+    }
+  fseek(ptr,0,SEEK_SET);
+  arr=malloc(*numString*sizeof(char));
+  for(i=0;i<*numString;i++)
+    {
+      arr[i]=malloc(MAXIMUM_LENGTH*sizeof(char));
+      fgets(arr[i],MAXIMUM_LENGTH,ptr);
+    }
+  fclose(ptr);
   return(0);
 }
 
@@ -161,6 +177,12 @@ char * * readString(char * filename, int * numString)
  */
 void printInteger(int * arrInteger, int numInteger)
 {
+  int i;
+  for(i=0;i<numInteger;i++)
+    {
+      printf("%d\n",arrInteger[i]);
+    }
+  return;
 }
 
 /* ----------------------------------------------- */
@@ -179,6 +201,8 @@ void printString(char * * arrString, int numString)
  */
 void freeInteger(int * arrInteger, int numInteger)
 {
+  free(arrInteger);
+  return;
 }
 
 /* ----------------------------------------------- */
@@ -189,6 +213,13 @@ void freeInteger(int * arrInteger, int numInteger)
  */
 void freeString(char * * arrString, int numString)
 {
+  int i;
+  for(i=0;i<numString;i++)
+    {
+      free(arrString[i]);
+    }
+  free(arrString);
+  return;
 }
 
 /* ----------------------------------------------- */
@@ -211,7 +242,19 @@ void freeString(char * * arrString, int numString)
 
 int saveInteger(char * filename, int * arrInteger, int numInteger)
 {
-  return(0);
+  FILE * ptr;
+  int i;
+  ptr=fopen(filename,"w");
+  if(ptr==NULL)
+    {
+      return(0);
+    }
+  for(i=0;i<numInteger;i++)
+    {
+      fprintf(ptr,"%d",arrInteger[i]);
+    }
+  fclose(ptr);
+  return(1);
 }
 
 
@@ -235,6 +278,35 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 
 int saveString(char * filename, char * * arrString, int numString)
 {
+  FILE * ptr;
+  int i;
+  ptr=fopen(filename,"w");
+  if(ptr==NULL)
+    {
+      return(0);
+    }
+  for(i=0;i<numString;i++)
+    {
+      fprintf(ptr,"%s",arrString[i]);
+    }
+  fclose(ptr);
+  return(1);
+}
+
+int intcomp(const void * a,const void * b)
+{
+  if(a<b)
+    {
+      return(-1);
+    }
+  if(a==b)
+    {
+      return(0);
+    }
+  if(a>b)
+    {
+      return(1);
+    }
   return(0);
 }
 
@@ -248,7 +320,11 @@ int saveString(char * filename, char * * arrString, int numString)
 
 void sortInteger(int * arrInteger, int numInteger)
 {
+  qsort(arrInteger,numInteger,sizeof(int),intcomp);
 }
+
+
+int strcomp(const void * a,const void * b)
 
 
 /* ----------------------------------------------- */
@@ -265,5 +341,3 @@ void sortInteger(int * arrInteger, int numInteger)
 void sortString(char * * arrString, int numString)
 {
 }
-
-
