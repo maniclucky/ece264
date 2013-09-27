@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pa05.h"
-#define MAXIMUM_LENGTH 80
+#define MAXIMUM_LENGTH 180
 
 /*
  * Read a file of integers.
@@ -325,7 +325,21 @@ void sortInteger(int * arrInteger, int numInteger)
 
 
 int strcomp(const void * a,const void * b)
-
+{
+  if(strcmp(a,b)<0)
+    {
+      return(-1);
+    }
+  if(strcmp(a,b)==0)
+    {
+      return(0);
+    }
+  if(strcmp(a,b)>0)
+    {
+      return(1);
+    }
+  return(0);
+}
 
 /* ----------------------------------------------- */
 /*
@@ -340,4 +354,5 @@ int strcomp(const void * a,const void * b)
 
 void sortString(char * * arrString, int numString)
 {
+  qsort(arrString,numString,sizeof(char),strcomp);
 }
