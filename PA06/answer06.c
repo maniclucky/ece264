@@ -174,35 +174,60 @@ struct Image * loadImage(const char* filename)
 {
   FILE * ptr;
   int * header=malloc(16);
-  int * * img;
+  uint8_t ** data;
   int magic;
   int height;
   int width;
   int comment_len;
-  int * comment;
-  ptr=fopen(filename,"r");
+  char * comment;
+  int i;
+  int j;
+  ptr=fopen(filename,"rb");
   if(ptr==NULL)
     {
       return(NULL);
     }
-  fread(header,4,16,ptr);
+  fread(header,4,4,ptr);
   magic = header[0];
   height = header[1];
   width = header[2];
-  comment= header[3];
-  printf("%x,%d,%d,%d\n",magic,height,width,comment);
-  if(height>0 || width>0)
+  comment_len= header[3];
+  printf("%x,%d,%d,%d\n",magic,height,width,comment_len);
+  //Error checking
+  if(height==0 || width==0)
     {
-      printf("Invalid Dimensions\n");
+      printf("This file looks non-euclidean. I think I'll nope the hell out.\n");
       return NULL;
     }
   if(magic!=ECE264_IMAGE_MAGIC_BITS)
     {
-      printf("Needs more mana\n");
+      printf("Spell fizzles. Needs more magic.\n");
       return NULL;
     }
-  return NULL;
+  if(comment_len>0)
+    {
+      comment=malloc(sizeof(char)*comment_len);
+      fread(comment,sizeof(char),comment_len,ptr);
+    }
+
+  data=malloc(sizeof(uint8_t)*height);
+  for(i=0;i<height;i++)
+    {
+      data[i]=malloc(width);
+      fread(data[i],sizeof(uint8_t),width,ptr);
+    }
+  for(i=0;i<height;i++)
+    {
+      for(j=0;j<width;j++)
+	{
+	  printf("%d ",data[i][j]);
+	}
+      printf("\n");
+    }
+  fclose(ptr);
+  free(header);
 }
+
 /*
  * ===================================================================
  * Free memory for an image structure
