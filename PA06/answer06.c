@@ -174,14 +174,13 @@ struct Image * loadImage(const char* filename)
 {
   FILE * ptr;
   int * header=malloc(16);
-  uint8_t ** data;
+  uint8_t * data;
   int magic;
   int height;
   int width;
   int comment_len;
   char * comment;
-  int i;
-  int j;
+  struct Image * ret=malloc(sizeof(struct Image));
   ptr=fopen(filename,"rb");
   if(ptr==NULL)
     {
@@ -210,22 +209,22 @@ struct Image * loadImage(const char* filename)
       fread(comment,sizeof(char),comment_len,ptr);
     }
 
-  data=malloc(sizeof(uint8_t)*height);
-  for(i=0;i<height;i++)
+  data=malloc(sizeof(uint8_t)*height*width);
+  fread(data,sizeof(uint8_t),height*width,ptr);
+  //Check for spares
+  if(fread(header,1,1,ptr)>0)
     {
-      data[i]=malloc(width);
-      fread(data[i],sizeof(uint8_t),width,ptr);
+      printf("Extra data! Kill it, kill it with fire!\n");
+      return(NULL);
     }
-  for(i=0;i<height;i++)
-    {
-      for(j=0;j<width;j++)
-	{
-	  printf("%d ",data[i][j]);
-	}
-      printf("\n");
-    }
+  //Packaging, cleanup and return
+  ret->height=height;
+  ret->width=width;
+  ret->data=data;
+  ret->comment=comment;
   fclose(ptr);
   free(header);
+  return(ret);
 }
 
 /*
@@ -240,7 +239,9 @@ struct Image * loadImage(const char* filename)
  */
 void freeImage(struct Image * image)
 {
-
+  free(image->data);
+  free(image->comment);
+  free(image);
 }
 
 /*
@@ -269,7 +270,24 @@ void freeImage(struct Image * image)
  */
 void linearNormalization(struct Image * image)
 {
-
+  int i;
+  int min=255;
+  int max=0;
+  for(i=0;i<image->width*image->height;i++)
+    {
+      if(image->data[i]>max)
+	{
+	  max=image->data[i];
+	}
+      if(image->data[i]<min)
+	{
+	  min=image->data[i];
+	}
+    }
+  for(i=0;i<image->width*image->height;i++)
+    {
+      image->data[i]=(image->data[i]-min)*255/(max-min);
+    }
 }
 
 

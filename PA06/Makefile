@@ -6,7 +6,7 @@ pa06: answer.o pa06.o
 pa06.o: pa06.c pa06.h
 	gcc -g -Wall -Wshadow -c pa06.c
 
-answer.o: answer06.c
+answer.o: answer06.c pa06.h
 	gcc -g -Wall -Wshadow -c answer06.c
 
 clean:
