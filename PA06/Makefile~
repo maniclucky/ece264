@@ -1,0 +1,7 @@
+all: heya
+
+heya: heya.o
+	gcc heya.o -o  heya
+
+heya.o: heya.c
+	gcc -c heya.c 

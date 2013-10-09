@@ -172,7 +172,7 @@
  */
 struct Image * loadImage(const char* filename)
 {
-    return NULL;
+  return NULL;
 }
 
 
