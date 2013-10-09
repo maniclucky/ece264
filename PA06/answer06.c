@@ -172,10 +172,37 @@
  */
 struct Image * loadImage(const char* filename)
 {
+  FILE * ptr;
+  int * header=malloc(16);
+  int * * img;
+  int magic;
+  int height;
+  int width;
+  int comment_len;
+  int * comment;
+  ptr=fopen(filename,"r");
+  if(ptr==NULL)
+    {
+      return(NULL);
+    }
+  fread(header,4,16,ptr);
+  magic = header[0];
+  height = header[1];
+  width = header[2];
+  comment= header[3];
+  printf("%x,%d,%d,%d\n",magic,height,width,comment);
+  if(height>0 || width>0)
+    {
+      printf("Invalid Dimensions\n");
+      return NULL;
+    }
+  if(magic!=ECE264_IMAGE_MAGIC_BITS)
+    {
+      printf("Needs more mana\n");
+      return NULL;
+    }
   return NULL;
 }
-
-
 /*
  * ===================================================================
  * Free memory for an image structure
