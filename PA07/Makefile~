@@ -1,0 +1,38 @@
+all: pa07
+
+pa07: answer.o pa07.o
+	gcc pa07.o answer07.o -o pa07
+
+pa07.o: pa07.c pa07.h
+	gcc -g -Wall -Wshadow -c pa07.c
+
+answer.o: answer07.c pa07.h
+	gcc -g -Wall -Wshadow -c answer07.c
+
+clean:
+	rm -rf *.0 pa07
+	rm -r output/*
+
+test:
+	./pa07 inputs/input0_A inputs/input0_B
+	valgrind ./pa07 inputs/input0_A inputs/input0_B	
+	./pa07 inputs/input1_A inputs/input1_B
+	valgrind ./pa07 inputs/input1_A inputs/input1_B
+	./pa07 inputs/input2_A inputs/input2_B
+	valgrind ./pa07 inputs/input2_A inputs/input2_B
+	./pa07 inputs/input3_A inputs/input3_B
+	valgrind ./pa07 inputs/input3_A inputs/input3_B
+	./pa07 inputs/input4_A inputs/input4_B
+	valgrind ./pa07 inputs/input4_A inputs/input4_B
+	./pa07 inputs/input5_A inputs/input5_B
+	valgrind ./pa07 inputs/input5_A inputs/input5_B
+	./pa07 inputs/input6_A inputs/input6_B
+	valgrind ./pa07 inputs/input6_A inputs/input6_B
+	./pa07 inputs/input7_A inputs/input7_B
+	valgrind ./pa07 inputs/input7_A inputs/input7_B
+	./pa07 inputs/input8_A inputs/input8_B
+	valgrind ./pa07 inputs/input8_A inputs/input8_B
+	./pa07 inputs/input9_A inputs/input9_B
+	valgrind ./pa07 inputs/input9_A inputs/input9_B
+	./pa07 inputs/input10_A inputs/input10_B
+	valgrind ./pa07 inputs/input10_A inputs/input10_B
